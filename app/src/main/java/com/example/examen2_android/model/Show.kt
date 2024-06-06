@@ -1,4 +1,5 @@
 package com.example.examen2_android.model
+import androidx.room.Embedded
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -12,9 +13,52 @@ data class Show(
     val premiered: String?,
     val language: String,
     val summary: String,
-    val network: Network?
+    val network: Network?,
+    @Json(name = "_embedded") val embedded: Embedded2? = null
 )
 
+@JsonClass(generateAdapter = true)
+data class Embedded2(
+    val cast: List<CastMember>
+)
+
+@JsonClass(generateAdapter = true)
+data class CastMember(
+    val person: Person,
+    val character: Character,
+    val self: Boolean,
+    val voice: Boolean
+)
+
+@JsonClass(generateAdapter = true)
+data class Person(
+    val id: Int,
+    val name: String,
+    val country: Country?,
+    val birthday: String?,
+    val deathday: String?,
+    val gender: String,
+    val image: Image?,
+    @Json(name = "_links") val links: Links?
+)
+
+@JsonClass(generateAdapter = true)
+data class Character(
+    val id: Int,
+    val name: String,
+    val image: Image?,
+    @Json(name = "_links") val links: Links?
+)
+
+@JsonClass(generateAdapter = true)
+data class Links(
+    val self: SelfLink
+)
+
+@JsonClass(generateAdapter = true)
+data class SelfLink(
+    val href: String
+)
 
 @JsonClass(generateAdapter = true)
 data class ShowSearchResponse(
