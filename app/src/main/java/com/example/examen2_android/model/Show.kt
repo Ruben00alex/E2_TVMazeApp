@@ -38,6 +38,7 @@ data class Person(
     val deathday: String?,
     val gender: String?,
     val image: Image?,
+    val url: String?,
     @Json(name = "_links") val links: Links?
 )
 

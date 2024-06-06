@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.examen2_android.viewmodel.ShowViewModel
 import kotlinx.coroutines.launch
@@ -25,7 +26,9 @@ import coil.compose.rememberImagePainter
 import com.example.examen2_android.data.db.AppDatabase
 import com.example.examen2_android.data.repository.ShowRepository
 import com.example.examen2_android.model.Show
+import com.example.examen2_android.ui.view.composables.LoadingScreen
 import com.example.examen2_android.ui.view.composables.ShowActorCard
+import com.example.examen2_android.ui.view.screens.DetailScreen
 import com.example.examen2_android.viewmodel.ShowViewModelFactory
 
 class DetailActivity : ComponentActivity() {
@@ -48,41 +51,7 @@ class DetailActivity : ComponentActivity() {
                         showViewModel.getShowDetails(showId)
                         val show by showViewModel.showDetails.collectAsState()
                         show?.let { DetailScreen(it) } ?: LoadingScreen()
-                    
-                }
-            }
-        }
-    }
-}
-@Composable
-fun LoadingScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = androidx.compose.ui.Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
-}
-@Composable
-fun DetailScreen(show:Show) {
 
-
-    show.let {
-        Column(modifier = Modifier.padding(16.dp)) {
-
-            Text(text = it.name, style = MaterialTheme.typography.bodySmall)
-            Text(text = it.genres.joinToString(", "), style = MaterialTheme.typography.bodyMedium)
-            it.rating?.average?.let { rating ->
-                Text(text = "Rating: $rating", style = MaterialTheme.typography.bodyMedium)
-            }
-//            Text(text = it.summary, style = MaterialTheme.typography.bodyMedium)
-
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2)
-            ) {
-
-                items(it.embedded?.cast ?: emptyList()) { castMember ->
-                    ShowActorCard(castMember)
                 }
             }
         }

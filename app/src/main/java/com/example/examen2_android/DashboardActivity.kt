@@ -38,7 +38,6 @@ class DashboardActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val showList by showViewModel.shows.collectAsState()
-//                     show?.let { DetailScreen(it) } ?: LoadingScreen()
                     MainScreen(showList = showList)
 
             }

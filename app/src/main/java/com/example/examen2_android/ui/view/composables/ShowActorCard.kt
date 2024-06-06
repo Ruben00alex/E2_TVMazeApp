@@ -1,5 +1,6 @@
 package com.example.examen2_android.ui.view.composables
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -27,11 +28,12 @@ import com.example.examen2_android.model.CastMember
 import com.example.examen2_android.model.Show
 
 @Composable
-fun ShowActorCard(castMember: CastMember, modifier: Modifier = Modifier, onClick: (Show) -> Unit = {}) {
+fun ShowActorCard(castMember: CastMember, modifier: Modifier = Modifier, onClick: (String) -> Unit = {}) {
     Card(
         modifier = modifier
             .padding(6.dp)
             .fillMaxWidth()
+            .clickable { castMember.person.url?.let { onClick(it) } }
             .clip(RoundedCornerShape(6.dp))
         ,
         shape = RoundedCornerShape(6.dp),

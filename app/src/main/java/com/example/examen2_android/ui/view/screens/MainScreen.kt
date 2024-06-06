@@ -20,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.room.Room
 import com.example.examen2_android.FavoritesScreen
-import com.example.examen2_android.LoadingScreen
 import com.example.examen2_android.data.db.AppDatabase
 import com.example.examen2_android.data.repository.ShowRepository
 import com.example.examen2_android.model.Show
@@ -52,13 +51,7 @@ fun MainScreen(showList: List<Show> ) {
         }
     ) {
         when (selectedIndex) {
-            0 -> {
-                if(showList.isNotEmpty()){
-                    ShowListScreen(showList)
-                }else{
-                        LoadingScreen()
-                }
-            }
+            0 -> ShowListScreen(showList)
             1 -> SearchScreen( ShowViewModel(repository) )
             2 -> FavoritesScreen()
         }

@@ -1,5 +1,6 @@
 package com.example.examen2_android.ui.view.screens
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -31,21 +32,40 @@ import androidx.room.Embedded
 import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
+import com.example.examen2_android.DetailActivity
 import com.example.examen2_android.model.Country
 import com.example.examen2_android.model.Image
 import com.example.examen2_android.model.Network
 import com.example.examen2_android.model.Rating
 import com.example.examen2_android.model.Show
+import com.example.examen2_android.ui.view.composables.LoadingScreen
 import com.example.examen2_android.ui.view.composables.ShowListCard
 
 
 @Composable
 fun ShowListScreen(showList: List<Show> = emptyList()   ) {
+
+
+    if(showList.isEmpty()){
+        LoadingScreen()
+        return
+    }
+
+
+
     LazyVerticalGrid(
     columns = GridCells.Fixed(2)
     ) {
         items(showList) { show ->
-            ShowListCard(show)
+
+            val context = LocalContext.current
+            ShowListCard(show){
+
+                val intent = Intent(context, DetailActivity::class.java).apply {
+                    putExtra("showId", show.id)
+                }
+                context.startActivity(intent)
+            }
         }
     }
 }
