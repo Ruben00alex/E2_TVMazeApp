@@ -1,5 +1,4 @@
 package com.example.examen2_android.model
-import androidx.room.Embedded
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -12,13 +11,13 @@ data class Show(
     val image: Image?,
     val premiered: String?,
     val language: String,
-    val summary: String,
+    val summary: String?,
     val network: Network?,
-    @Json(name = "_embedded") val embedded: Embedded2? = null
+    @Json(name = "_embedded") val embedded: Embedded? = null
 )
 
 @JsonClass(generateAdapter = true)
-data class Embedded2(
+data class Embedded(
     val cast: List<CastMember>
 )
 
@@ -37,7 +36,7 @@ data class Person(
     val country: Country?,
     val birthday: String?,
     val deathday: String?,
-    val gender: String,
+    val gender: String?,
     val image: Image?,
     @Json(name = "_links") val links: Links?
 )

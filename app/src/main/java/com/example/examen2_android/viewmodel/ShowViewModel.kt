@@ -18,6 +18,8 @@ class ShowViewModel(private val repository: ShowRepository) : ViewModel() {
     private val _favoriteShows = MutableStateFlow<List<ShowEntity>>(emptyList())
     val favoriteShows: StateFlow<List<ShowEntity>> = _favoriteShows
 
+    private val _showDetails = MutableStateFlow<Show?>(null)
+    val showDetails: StateFlow<Show?> = _showDetails
     fun getShows() {
         viewModelScope.launch {
             _shows.value = repository.getShows()
@@ -33,8 +35,12 @@ class ShowViewModel(private val repository: ShowRepository) : ViewModel() {
     fun getShowDetails(id: Int) {
         viewModelScope.launch {
             val show = repository.getShowDetails(id)
-            // Handle show details as needed
+            _showDetails.value = show
         }
+    }
+    suspend fun returnShowDetails(id: Int):Show {
+         return  repository.getShowDetails(id)
+
     }
 
     fun saveShow(show: ShowEntity) {

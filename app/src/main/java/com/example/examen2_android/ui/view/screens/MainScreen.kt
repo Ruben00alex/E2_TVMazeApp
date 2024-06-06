@@ -6,6 +6,8 @@ import androidx.compose.material.BottomNavigationDefaults
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -37,9 +39,10 @@ fun MainScreen(showList: List<Show> ) {
     Scaffold(
         bottomBar = {
             BottomNavigation(windowInsets = BottomNavigationDefaults.windowInsets) {
+                val icons =  listOf(Icons.Filled.Home,Icons.Filled.Search,Icons.Filled.Favorite)
                 items.forEachIndexed { index, item ->
                     BottomNavigationItem(
-                        icon = { Icon(Icons.Filled.Favorite, contentDescription = null) },
+                        icon = {  Icon(icons[index], contentDescription = null) },
                         label = { Text(item) },
                         selected = selectedIndex == index,
                         onClick = { selectedIndex = index }

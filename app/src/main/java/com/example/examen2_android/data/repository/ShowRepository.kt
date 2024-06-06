@@ -15,7 +15,6 @@ class ShowRepository(private val showDao: ShowDao) {
     suspend fun searchShows(query: String): List<Show> {
         return RetrofitInstance.api.searchShows(query).map { it.show }
     }
-
     suspend fun getShowDetails(id: Int): Show {
         return RetrofitInstance.api.getShowDetails(id)
     }

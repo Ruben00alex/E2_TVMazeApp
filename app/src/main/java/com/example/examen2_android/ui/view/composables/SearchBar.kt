@@ -3,8 +3,12 @@ package com.example.examen2_android.ui.view.composables
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Menu
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -14,7 +18,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
     query: TextFieldValue,
@@ -22,8 +25,10 @@ fun SearchBar(
     onSearch: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    //ALIGN VERTICALLY THE ROW ELEMENTS
-    Row(modifier.fillMaxWidth().padding(8.dp), verticalAlignment = Alignment.CenterVertically){
+    Row(
+        modifier
+            .fillMaxWidth()
+            .padding(8.dp), verticalAlignment = Alignment.CenterVertically){
         TextField(
             value = query,
             onValueChange = onQueryChange,
@@ -36,7 +41,7 @@ fun SearchBar(
             onClick = onSearch,
             modifier = Modifier
         ) {
-            Text("🔎")
+            Icon(Icons.Rounded.Search, contentDescription = "Localized description")
         }
     }
 }
