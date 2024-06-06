@@ -11,9 +11,11 @@ interface ApiService {
     @GET("shows")
     suspend fun getShows(): List<Show>
 
+
     @GET("search/shows")
     suspend fun searchShows(@Query("q") query: String): List<ShowSearchResponse>
 
     @GET("shows/{id}")
     suspend fun getShowDetails(@Path("id") id: Int, @Query("embed") embed: String = "cast"): Show
+
 }
