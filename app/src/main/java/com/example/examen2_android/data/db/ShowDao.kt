@@ -15,4 +15,7 @@ interface ShowDao {
 
     @Query("DELETE FROM shows WHERE id = :showId")
     suspend fun deleteShow(showId: Int)
+
+    @Query("SELECT * FROM shows WHERE id = :showId LIMIT 1")
+    suspend fun getShowById(showId: Int): ShowEntity?
 }
