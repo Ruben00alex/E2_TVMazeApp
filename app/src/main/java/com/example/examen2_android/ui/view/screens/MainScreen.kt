@@ -12,23 +12,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.room.Room
-import com.example.examen2_android.FavoritesScreen
 import com.example.examen2_android.data.db.AppDatabase
 import com.example.examen2_android.data.repository.ShowRepository
 import com.example.examen2_android.model.Show
 import com.example.examen2_android.viewmodel.ShowViewModel
 
-
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen(showList: List<Show> ) {
+fun MainScreen(showList: List<Show> ,favoritesList: List<Show>, showViewModel: ShowViewModel) {
     val database = Room.databaseBuilder(LocalContext.current, AppDatabase::class.java, "show_db").build()
     val repository = ShowRepository(database.showDao())
 
@@ -53,7 +50,11 @@ fun MainScreen(showList: List<Show> ) {
         when (selectedIndex) {
             0 -> ShowListScreen(showList)
             1 -> SearchScreen( ShowViewModel(repository) )
-            2 -> FavoritesScreen()
+            2 -> {
+                    showViewModel.getFavoriteShows()
+                    ShowListScreen(favoritesList, "Favorites")
+            }
         }
     }
 }
+
