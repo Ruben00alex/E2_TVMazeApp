@@ -9,14 +9,27 @@ import com.example.examen2_android.model.Show
 class ShowRepository(private val showDao: ShowDao) {
 
     suspend fun getShows(): List<Show> {
-        return RetrofitInstance.api.getShows()
+        return try {
+            RetrofitInstance.api.getShows()
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
 
     suspend fun searchShows(query: String): List<Show> {
-        return RetrofitInstance.api.searchShows(query).map { it.show }
+        return try {
+            RetrofitInstance.api.searchShows(query).map { it.show }
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
-    suspend fun getShowDetails(id: Int): Show {
-        return RetrofitInstance.api.getShowDetails(id)
+
+    suspend fun getShowDetails(id: Int): Show? {
+        return try {
+            RetrofitInstance.api.getShowDetails(id)
+        } catch (e: Exception) {
+            null
+        }
     }
 
     suspend fun saveShow(show: ShowEntity) {
@@ -29,5 +42,9 @@ class ShowRepository(private val showDao: ShowDao) {
 
     suspend fun deleteShow(id: Int) {
         showDao.deleteShow(id)
+    }
+
+    suspend fun isFavoriteShow(id: Int): Boolean {
+        return showDao.getShowById(id) != null
     }
 }
