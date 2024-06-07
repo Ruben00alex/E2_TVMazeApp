@@ -14,7 +14,7 @@ import com.example.examen2_android.model.Show
 fun ShowItem(show: Show) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(text = show.name, style = MaterialTheme.typography.titleMedium)
-        Text(text = show.genres.joinToString(", "), style = MaterialTheme.typography.bodyMedium)
+        show.genres?.let { Text(text = it.joinToString(", "), style = MaterialTheme.typography.bodyMedium) }
         show.rating?.average?.let {
             Text(text = "Rating: $it", style = MaterialTheme.typography.bodySmall)
         }

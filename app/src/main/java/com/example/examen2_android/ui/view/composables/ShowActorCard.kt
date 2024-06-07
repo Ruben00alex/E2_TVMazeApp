@@ -1,6 +1,5 @@
 package com.example.examen2_android.ui.view.composables
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -25,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.examen2_android.model.CastMember
-import com.example.examen2_android.model.Show
 
 @Composable
 fun ShowActorCard(castMember: CastMember, modifier: Modifier = Modifier, onClick: (String) -> Unit = {}) {

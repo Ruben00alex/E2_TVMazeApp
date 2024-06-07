@@ -66,13 +66,15 @@ fun ShowListCard(show: Show, modifier: Modifier = Modifier, onClick: (Show) -> U
                     overflow = TextOverflow.Ellipsis,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-                Text(
-                    text = show.genres.joinToString(", "),
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                show.genres?.let {
+                    Text(
+                        text = it.joinToString(", "),
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
                 Text(
                     text = "Rating: ${show.rating?.average ?: "N/A"}",
                     style = MaterialTheme.typography.bodySmall,

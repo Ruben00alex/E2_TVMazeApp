@@ -6,11 +6,11 @@ import com.squareup.moshi.JsonClass
 data class Show(
     val id: Int,
     val name: String,
-    val genres: List<String>,
+    val genres: List<String>?,
     val rating: Rating?,
     val image: Image?,
     val premiered: String?,
-    val language: String,
+    val language: String?,
     val summary: String?,
     val network: Network?,
     @Json(name = "_embedded") val embedded: Embedded? = null
