@@ -1,43 +1,32 @@
 package com.example.examen2_android
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import com.example.examen2_android.viewmodel.ShowViewModel
-import kotlinx.coroutines.launch
-import com.example.examen2_android.ui.theme.Examen2_AndroidTheme
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
-import coil.compose.AsyncImage
-import coil.compose.rememberImagePainter
 import com.example.examen2_android.data.db.AppDatabase
+import com.example.examen2_android.data.db.ShowEntity
 import com.example.examen2_android.data.repository.ShowRepository
-import com.example.examen2_android.model.Show
+import com.example.examen2_android.ui.theme.Examen2_AndroidTheme
 import com.example.examen2_android.ui.view.composables.LoadingScreen
-import com.example.examen2_android.ui.view.composables.ShowActorCard
 import com.example.examen2_android.ui.view.screens.DetailScreen
+import com.example.examen2_android.viewmodel.ShowViewModel
 import com.example.examen2_android.viewmodel.ShowViewModelFactory
 
 class DetailActivity : ComponentActivity() {
-
     private lateinit var showViewModel: ShowViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val showId = intent.getIntExtra("showId", -1)
-        val database = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "show_db").build()
+        val database =
+            Room.databaseBuilder(applicationContext, AppDatabase::class.java, "show_db").build()
         val repository = ShowRepository(database.showDao())
 
         setContent {
@@ -46,11 +35,37 @@ class DetailActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                        val factory = ShowViewModelFactory(repository)
-                        showViewModel = ViewModelProvider(this, factory)[ShowViewModel::class.java]
-                        showViewModel.getShowDetails(showId)
-                        val show by showViewModel.showDetails.collectAsState()
-                        show?.let { DetailScreen(it) } ?: LoadingScreen()
+                    val factory = ShowViewModelFactory(repository)
+                    showViewModel = ViewModelProvider(this, factory)[ShowViewModel::class.java]
+                    showViewModel.getShowDetails(showId)
+                    showViewModel.getFavoriteShows()
+                    val show by showViewModel.showDetails.collectAsState()
+                    val isFavorite by showViewModel.isFavorite.collectAsState()
+                    show?.let {
+                        DetailScreen(it,
+                            onBack = { finish();
+                                 },
+                            onAddToFavorites = {
+                                val showEntity = it.genres?.let { it1 ->
+                                    ShowEntity(
+                                        id = it.id,
+                                        name = it.name,
+                                        genres = it1.joinToString(", "),
+                                        rating = it.rating?.average ?: 0.0,
+                                        thumbnail = it.image?.medium ?: ""
+                                    )
+                                }
+                                if (isFavorite) {
+                                    showViewModel.deleteShow(it.id)
+                                } else {
+                                    if (showEntity != null) {
+                                        showViewModel.saveShow(showEntity)
+                                    }
+                                }
+                            },
+                            isFavorite = isFavorite
+                        )
+                    } ?: LoadingScreen()
 
                 }
             }
