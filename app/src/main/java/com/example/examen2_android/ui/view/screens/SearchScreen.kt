@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 fun SearchScreen(viewModel: ShowViewModel) {
     val scope = rememberCoroutineScope()
     var searchText by remember { mutableStateOf(TextFieldValue("")) }
-    val searchResults by viewModel.shows.collectAsState()
+    val searchResults by viewModel.searchResults .collectAsState()
 
     Column {
         SearchBar(
